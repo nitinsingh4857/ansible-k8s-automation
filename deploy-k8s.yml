@@ -1,8 +1,19 @@
-- name: Deploy application to Kubernetes
-  hosts: localhost
-  gather_facts: false
-
+---
+- name: Deploy Kubernetes Application
+  hosts: all
+  become: yes
   tasks:
-    - name: Simulate Kubernetes deployment
-      debug:
-        msg: "Deploying to Kubernetes from Jenkins localhost"
+    - name: Ensure namespace exists
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: prod
+
+    - name: Apply Kubernetes manifests
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('file', 'k8s/deployment.yaml') }}"
+
