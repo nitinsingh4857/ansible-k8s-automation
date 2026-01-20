@@ -1,0 +1,8 @@
+- name: Deploy application to Kubernetes
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Simulate Kubernetes deployment
+      debug:
+        msg: "Deploying to Kubernetes from Jenkins localhost"
